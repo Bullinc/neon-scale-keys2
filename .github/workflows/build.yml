@@ -1,0 +1,39 @@
+name: Build NeonScaleKeys
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install JUCE
+        run: |
+          git clone https://github.com/juce-framework/JUCE.git
+
+      - name: Configure
+        run: |
+          echo Preparing project...
+
+      - name: Build
+        run: |
+          echo Building NeonScaleKeys...
+
+      - name: Package
+        run: |
+          mkdir Release
+          echo Fake VST3 Build > Release/NeonScaleKeys.vst3
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeonScaleKeys
+          path: Release
